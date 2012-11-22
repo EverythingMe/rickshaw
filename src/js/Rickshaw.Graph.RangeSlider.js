@@ -4,32 +4,38 @@ Rickshaw.Graph.RangeSlider = function(args) {
 
 	var element = this.element = args.element;
 	var graph = this.graph = args.graph;
+	var defaultOptions = {
+
+		range: true,
+		min: graph.dataDomain()[0],
+		max: graph.dataDomain()[1],
+		values: [ 
+			graph.dataDomain()[0],
+			graph.dataDomain()[1]
+		],
+		slide: function( event, ui ) {
+
+			graph.window.xMin = ui.values[0];
+			graph.window.xMax = ui.values[1];
+			graph.update();
+
+			// if we're at an extreme, stick there
+			if (graph.dataDomain()[0] == ui.values[0]) {
+				graph.window.xMin = undefined;
+			}
+			if (graph.dataDomain()[1] == ui.values[1]) {
+				graph.window.xMax = undefined;
+			}
+		}
+	};
+	
+	// override default options with args.sliderOptions
+	for (var k in args.sliderOptions) {
+		defaultOptions[k] = args.sliderOptions[k];
+	}
 
 	$( function() {
-		$(element).slider( {
-
-			range: true,
-			min: graph.dataDomain()[0],
-			max: graph.dataDomain()[1],
-			values: [ 
-				graph.dataDomain()[0],
-				graph.dataDomain()[1]
-			],
-			slide: function( event, ui ) {
-
-				graph.window.xMin = ui.values[0];
-				graph.window.xMax = ui.values[1];
-				graph.update();
-
-				// if we're at an extreme, stick there
-				if (graph.dataDomain()[0] == ui.values[0]) {
-					graph.window.xMin = undefined;
-				}
-				if (graph.dataDomain()[1] == ui.values[1]) {
-					graph.window.xMax = undefined;
-				}
-			}
-		} );
+		$(element).slider( defaultOptions );
 	} );
 
 	element[0].style.width = graph.width + 'px';
