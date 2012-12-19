@@ -156,4 +156,12 @@ Rickshaw.Fixtures.Color = function() {
 		'#cc6699',
 		'#999900'
 	];
+	
+	this.schemes.oceanfive = [
+		'#00a0b0',
+		'#6a4a3c',
+		'#cc333f',
+		'#eb6841',
+		'#edc951'
+	];
 };
